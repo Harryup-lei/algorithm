@@ -1,6 +1,6 @@
 # algorithm
 
-力扣（LeetCode）算法题解仓库，记录刷题过程中的 Java 实现与解题心得，目前已收录 **10 道题、16 种解法**。
+力扣（LeetCode）算法题解仓库，记录刷题过程中的 Java 实现与解题心得，目前已收录 **14 道题、21 种解法**。
 
 ## 项目信息
 
@@ -22,6 +22,10 @@
 | [433](https://leetcode.cn/problems/minimum-genetic-mutation/) | 最小基因变化 | 中等 | 广度优先搜索（BFS） | `Lettcode433` |
 | [436](https://leetcode.cn/problems/find-right-interval/) | 寻找右区间 | 中等 | TreeMap 红黑树、排序 + 二分查找 | `Lettcode436` · `Lettcode436_1` |
 | [447](https://leetcode.cn/problems/number-of-boomerangs/) | 回旋镖的数量 | 中等 | 暴力三重循环、哈希表计数 | `Lettcode447` · `Lettcode447_1` |
+| [449](https://leetcode.cn/problems/serialize-and-deserialize-bst/) | 序列化和反序列化二叉搜索树 | 中等 | 前序遍历序列化 + 上下界递归建树 | `Lettcode449` |
+| [451](https://leetcode.cn/problems/sort-characters-by-frequency/) | 根据字符出现频率排序 | 中等 | 哈希计数 + 优先队列、ASCII 编码映射 | `Lettcode451` · `Lettcode451_1` |
+| [453](https://leetcode.cn/problems/minimum-moves-to-equal-array-elements/) | 最小操作次数使数组元素相等 | 中等 | 逆向思维 | `Lettcode453` |
+| [456](https://leetcode.cn/problems/132-pattern/) | 132 模式 | 中等 | 单调栈 | `Lettcode456` |
 
 ## 解题心得
 
@@ -37,6 +41,10 @@
 - **[433] 最小基因变化**：BFS 求最短变化次数。合理剪枝是关键——新基因必须存在于 `bank` 且未被访问过，用 `map` 记录到达每个基因的步数，逐层扩展
 - **[436] 寻找右区间**：本质是「找第一个起点 ≥ 当前终点的区间」。用 `TreeMap` 的 `ceilingKey` 直接拿到答案（红黑树，O(n log n)）；也可以把起点排序后二分查找，两种写法都要注意保存原始下标
 - **[447] 回旋镖的数量**：以每个点为中心，统计与它距离相同的点的个数 `cnt`，贡献 `cnt × (cnt - 1)` 个有序排列。暴力三重循环直观但 O(n³)；哈希表按距离分组可降到 O(n²)，计算平方距离时注意用 `long` 防溢出
+- **[449] 序列化和反序列化二叉搜索树**：序列化用前序遍历拼接成字符串；反序列化的关键在于**利用 BST 的性质**——递归建树时传入 `(min, max)` 上下界，队首元素不在范围内就说明该位置是空节点，无需存储 `null` 占位符，既保持原始树结构又节省空间
+- **[451] 根据字符出现频率排序**：哈希表统计频次，优先队列按频次降序输出。解法一自己把字符映射成 `0~61` 的编号（小写 `0-25`、大写 `26-51`、数字 `52-61`）再手动还原，加深了对 ASCII 码的理解；解法二直接用 `char` 作为键更简洁，并在频次相同时按字符排序保证结果稳定
+- **[453] 最小操作次数使数组元素相等**：逆向思维的脑筋急转弯。「每次让 n-1 个元素 +1」等价于「每次让 1 个元素 -1」，于是问题变成把所有元素都减到最小值，答案就是 `Σ(nums[i] - min)`
+- **[456] 132 模式**：从右向左遍历，单调栈保持递减。`k` 记录所有被弹出的元素中的最大值，即「2」的最优候选；当 `nums[i] < k` 时说明存在 `nums[i] < k < 栈中某元素` 的 132 模式，直接返回 `true`
 
 ## 目录结构
 
@@ -58,6 +66,11 @@ src/main/java/com/kelei/
 ├── Lettcode436_1.java  # 436 寻找右区间：排序 + 二分查找
 ├── Lettcode447.java    # 447 回旋镖的数量：暴力三重循环
 ├── Lettcode447_1.java  # 447 回旋镖的数量：哈希表计数
+├── Lettcode449.java    # 449 序列化和反序列化二叉搜索树：前序 + 上下界递归
+├── Lettcode451.java    # 451 根据字符出现频率排序：ASCII 编码映射 + 优先队列
+├── Lettcode451_1.java  # 451 根据字符出现频率排序：哈希计数 + 优先队列
+├── Lettcode453.java    # 453 最小操作次数使数组元素相等：逆向思维
+├── Lettcode456.java    # 456 132 模式：单调栈
 └── Main.java           # 本地调试入口
 ```
 
@@ -77,8 +90,8 @@ java算法 <本题心得> Lettcode<题号><题目名>
 例如：
 
 ```
-java算法 广度优先搜索合理的条件判断 Lettcode433最小基因变化
-java算法 滑动窗口缩小窗口的条件判断 Lettcode424替换后的最长重复字符
+java算法 逆向思维脑筋急转弯 Lettcode453最小操作次数使数组元素相等
+java算法 单调栈找最近比其大的数 Lettcode456 132模式
 ```
 
 持续更新中，欢迎交流与指正。
