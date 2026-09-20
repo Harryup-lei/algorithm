@@ -1,4 +1,5 @@
 package com.kelei;
+import java.util.Arrays;
 
 public class Lettcode462 {
 	public int minMoves2(int[] nums) {
